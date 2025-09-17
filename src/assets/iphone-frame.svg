@@ -1,0 +1,87 @@
+<svg width="356" height="730" viewBox="0 0 94.191667 193.14585" xmlns="http://www.w3.org/2000/svg">
+  <!-- iPhone Frame -->
+  <rect
+    style="fill:#6c635b;fill-opacity:1;stroke-width:2.01436"
+    width="92.953682"
+    height="192.91783"
+    x="0.619113"
+    y="0.114167"
+    ry="15.627288" />
+  
+  <!-- Inner Frame -->
+  <rect
+    style="fill:#dad5c5;fill-opacity:1;stroke-width:4.49668"
+    width="91.930702"
+    height="191.70049"
+    x="1.130618"
+    y="0.722831"
+    ry="15.361994" />
+  
+  <!-- Screen Area -->
+  <rect
+    style="fill:#000000;fill-opacity:1;stroke-width:1.52333"
+    width="87.924065"
+    height="188.56433"
+    x="3.133946"
+    y="1.290917"
+    ry="14.174931" />
+
+  <!-- Dynamic Island -->
+  <rect
+    style="fill:#000000;fill-opacity:1;stroke-width:0.264583"
+    width="27.19771"
+    height="8.0999603"
+    x="33.303619"
+    y="6.073919"
+    ry="4.0499802" />
+
+  <!-- Camera System -->
+  <g transform="translate(-10.393673,4.629682)">
+    <circle
+      style="fill:#0a0a0a;fill-opacity:1"
+      cx="57.21339"
+      cy="13.775171"
+      r="1.3121531" />
+    <circle
+      style="fill:#0c0e11;fill-opacity:1"
+      cx="57.21339"
+      cy="13.775171"
+      r="0.8093546" />
+    <circle
+      style="fill:#12171e;fill-opacity:1"
+      cx="57.21339"
+      cy="13.775171"
+      r="0.61666459" />
+  </g>
+
+  <!-- Volume Buttons -->
+  <rect
+    style="fill:#6c635b;fill-opacity:1"
+    width="1.40795"
+    height="13.474122"
+    x="-1.1252896"
+    y="43.33736"
+    ry="0.22113" />
+  
+  <rect
+    style="fill:#6c635b;fill-opacity:1"
+    width="1.40795"
+    height="7.838446"
+    x="-1.1252896"
+    y="28.39292"
+    ry="0.22113" />
+
+  <!-- Power Button -->
+  <rect
+    style="fill:#6c635b;fill-opacity:1"
+    width="1.40795"
+    height="22.659838"
+    x="93.591942"
+    y="53.119912"
+    ry="0.22113" />
+
+  <!-- Home Indicator -->
+  <path
+    style="fill:#000000;fill-opacity:0.3"
+    d="m 37.464639,185.92708 c -1.08886,0 -1.0607,-0.25971 -1.28614,-0.5544 -0.16443,-0.21494 -0.37624,-0.2834 -0.79319,-0.2834 h -17.10403 c -0.41695,0 -0.62823,0.06845 -0.79266,0.2834 -0.22544,0.29469 -0.19781,0.5544 -1.28667,0.5544 z" />
+</svg>

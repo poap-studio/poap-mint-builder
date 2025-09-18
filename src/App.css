@@ -2090,12 +2090,37 @@ html, body {
   .mobile-frame {
     width: 280px !important;
     height: 574px !important;
+    transform: scale(0.85);
+    transform-origin: center;
   }
   
   .mobile-preview {
     width: 250px !important;
     height: 525px !important;
     padding-top: 12% !important;
+  }
+
+  /* Scale down all preview content proportionally */
+  .mobile-preview .figma-card-wrapper {
+    transform: scale(0.75);
+    transform-origin: center;
+  }
+
+  .mobile-preview .figma-bottom-section {
+    transform: scale(0.8);
+    transform-origin: bottom center;
+    height: 368px !important;
+    max-height: 368px !important;
+  }
+
+  .mobile-preview .figma-top-section {
+    transform: scale(0.8);
+    transform-origin: top center;
+  }
+
+  .mobile-preview .figma-logo {
+    width: 120px !important;
+    height: 28px !important;
   }
   
   .section {

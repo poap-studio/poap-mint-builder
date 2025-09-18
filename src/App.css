@@ -271,6 +271,7 @@ html, body {
   color: #374151;
   font-weight: 600;
   font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
 }
 
 .text-input, .textarea-input, .select-input {
@@ -279,6 +280,7 @@ html, body {
   border: 2px solid #e5e7eb;
   border-radius: 12px;
   font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
   transition: all 0.2s ease;
   background: #fafbfc;
   color: #374151;
@@ -328,17 +330,82 @@ html, body {
 .file-input {
   width: 100%;
   padding: 1rem;
-  border: 2px dashed #d1d5db;
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
-  background: #f9fafb;
+  background: #ffffff;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 0;
+  color: transparent;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.file-input::file-selector-button {
+  display: none;
+}
+
+.file-input::-webkit-file-upload-button {
+  display: none;
+}
+
+.file-input::before {
+  content: '📁 Click to upload image';
+  display: block;
+  color: #9ca3af;
   font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .file-input:hover {
   border-color: #667eea;
-  background: #f0f4ff;
+  background: #f8faff;
+}
+
+.file-input:hover::before {
+  color: #667eea;
+}
+
+.file-input-container {
+  position: relative;
+}
+
+.file-input.has-image {
+  opacity: 0;
+  z-index: 1;
+}
+
+.file-input.has-image::before {
+  display: none;
+}
+
+.file-preview-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 2;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.file-preview-image img {
+  max-width: 100%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .preview-thumb {
@@ -359,10 +426,10 @@ html, body {
 
 .delete-image-btn {
   position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 18px;
-  height: 18px;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
   background: rgba(239, 68, 68, 0.9);
   color: white;
   border: none;
@@ -371,14 +438,17 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: normal;
-  line-height: 18px;
+  line-height: 1;
   transition: all 0.2s ease;
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
   text-align: center;
   box-sizing: border-box;
+  z-index: 3;
+  vertical-align: top;
+  font-family: Arial, sans-serif;
 }
 
 .delete-image-btn:hover {
@@ -599,6 +669,21 @@ html, body {
   background: #e5e7eb;
   padding: 0.25rem;
   border-radius: 12px;
+  position: relative;
+}
+
+.nav-tabs::before {
+  content: '';
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  height: calc(100% - 0.5rem);
+  width: var(--tab-width, calc(33.333% - 0.333rem));
+  background: white;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  transform: translateX(var(--tab-translate, 0));
+  z-index: 1;
 }
 
 .nav-tab {
@@ -616,12 +701,20 @@ html, body {
   font-size: 0.875rem;
   font-weight: 500;
   color: #6b7280;
+  outline: none;
+  position: relative;
+  z-index: 2;
 }
 
 .nav-tab.active {
-  background: white;
+  background: transparent;
   color: #667eea;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.nav-tab:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .nav-tab:hover:not(.active) {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
 function App() {
@@ -9,6 +9,30 @@ function App() {
   const [showForm, setShowForm] = useState(false) // For sliding form animation
   const [backdropFading, setBackdropFading] = useState(false) // For backdrop fade animation
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved', 'saving', 'unsaved'
+
+  // Update sliding tab background position
+  useEffect(() => {
+    const updateTabSlider = () => {
+      const tabsContainer = document.querySelector('.nav-tabs')
+      const activeTab = document.querySelector('.nav-tab.active')
+      
+      if (tabsContainer && activeTab) {
+        const containerRect = tabsContainer.getBoundingClientRect()
+        const activeRect = activeTab.getBoundingClientRect()
+        
+        // Calculate position relative to container (accounting for padding)
+        const translateX = activeRect.left - containerRect.left - 4 // 4px = 0.25rem padding
+        const width = activeRect.width
+        
+        tabsContainer.style.setProperty('--tab-width', `${width}px`)
+        tabsContainer.style.setProperty('--tab-translate', `${translateX}px`)
+      }
+    }
+    
+    // Small delay to ensure DOM is ready
+    setTimeout(updateTabSlider, 10)
+  }, [previewScreen])
+  
 
 
   const handleBackdropClose = () => {
@@ -27,7 +51,7 @@ function App() {
       primaryColor: '#ffffff',
       secondaryColor: '#f3f4f6',
       buttonColor: '#6366f1',
-      fontFamily: 'Inter',
+      fontFamily: 'Arial',
       backgroundImage: '',
       backgroundColor: '#6b7280',
       descriptionColor: '#6b7280',
@@ -99,6 +123,22 @@ function App() {
       setSaveStatus('saved')
     }, 500)
   }
+
+
+  const triggerImageUpload = (imageType) => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.onchange = (e) => {
+      if (imageType === 'logo') {
+        handleImageUpload('branding', 'logoUrl', e)
+      } else if (imageType === 'poap') {
+        handleImageUpload('content', 'poapImage', e)
+      }
+    }
+    input.click()
+  }
+
 
   const createNewPage = () => {
     const newPage = {
@@ -441,71 +481,83 @@ function App() {
                   <div className="media-grid">
                     <div className="media-upload">
                       <label className="upload-label">Brand Logo</label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload('branding', 'logoUrl', e)}
-                        className="file-input"
-                      />
-                      {config.branding.logoUrl && (
-                        <div className="preview-thumb">
-                          <img src={config.branding.logoUrl} alt="Logo preview" />
-                          <button 
-                            type="button"
-                            onClick={() => handleConfigChange('branding', 'logoUrl', '')}
-                            className="delete-image-btn"
-                            title="Delete logo"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      )}
+                      <div className="file-input-container">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload('branding', 'logoUrl', e)}
+                          className={`file-input ${config.branding.logoUrl ? 'has-image' : ''}`}
+                        />
+                        {config.branding.logoUrl && (
+                          <>
+                            <div className="file-preview-image">
+                              <img src={config.branding.logoUrl} alt="Logo preview" />
+                            </div>
+                            <button 
+                              type="button"
+                              onClick={() => handleConfigChange('branding', 'logoUrl', '')}
+                              className="delete-image-btn"
+                              title="Delete logo"
+                            >
+                              ×
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
 
                     <div className="media-upload">
                       <label className="upload-label">POAP Image</label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload('content', 'poapImage', e)}
-                        className="file-input"
-                      />
-                      {config.content.poapImage && (
-                        <div className="preview-thumb">
-                          <img src={config.content.poapImage} alt="POAP preview" />
-                          <button 
-                            type="button"
-                            onClick={() => handleConfigChange('content', 'poapImage', '')}
-                            className="delete-image-btn"
-                            title="Delete POAP image"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      )}
+                      <div className="file-input-container">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload('content', 'poapImage', e)}
+                          className={`file-input ${config.content.poapImage ? 'has-image' : ''}`}
+                        />
+                        {config.content.poapImage && (
+                          <>
+                            <div className="file-preview-image">
+                              <img src={config.content.poapImage} alt="POAP preview" />
+                            </div>
+                            <button 
+                              type="button"
+                              onClick={() => handleConfigChange('content', 'poapImage', '')}
+                              className="delete-image-btn"
+                              title="Delete POAP image"
+                            >
+                              ×
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
 
                     <div className="media-upload">
                       <label className="upload-label">Background Image</label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleImageUpload('branding', 'backgroundImage', e)}
-                        className="file-input"
-                      />
-                      {config.branding.backgroundImage && (
-                        <div className="preview-thumb">
-                          <img src={config.branding.backgroundImage} alt="Background preview" />
-                          <button 
-                            type="button"
-                            onClick={() => handleConfigChange('branding', 'backgroundImage', '')}
-                            className="delete-image-btn"
-                            title="Delete background image"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      )}
+                      <div className="file-input-container">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload('branding', 'backgroundImage', e)}
+                          className={`file-input ${config.branding.backgroundImage ? 'has-image' : ''}`}
+                        />
+                        {config.branding.backgroundImage && (
+                          <>
+                            <div className="file-preview-image">
+                              <img src={config.branding.backgroundImage} alt="Background preview" />
+                            </div>
+                            <button 
+                              type="button"
+                              onClick={() => handleConfigChange('branding', 'backgroundImage', '')}
+                              className="delete-image-btn"
+                              title="Delete background image"
+                            >
+                              ×
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -589,11 +641,74 @@ function App() {
                           onChange={(e) => handleConfigChange('branding', 'fontFamily', e.target.value)}
                           className="select-input"
                         >
-                          <option value="Arial">Arial</option>
-                          <option value="Helvetica">Helvetica</option>
-                          <option value="Inter">Inter</option>
-                          <option value="Georgia">Georgia</option>
-                          <option value="Times New Roman">Times New Roman</option>
+                          <optgroup label="System Fonts">
+                            <option value="Arial">Arial</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                          </optgroup>
+                          <optgroup label="Google Fonts - Popular Sans Serif">
+                            <option value="Inter">Inter</option>
+                            <option value="Roboto">Roboto</option>
+                            <option value="Open Sans">Open Sans</option>
+                            <option value="Lato">Lato</option>
+                            <option value="Montserrat">Montserrat</option>
+                            <option value="Poppins">Poppins</option>
+                            <option value="Source Sans Pro">Source Sans Pro</option>
+                            <option value="Nunito">Nunito</option>
+                            <option value="Work Sans">Work Sans</option>
+                            <option value="Raleway">Raleway</option>
+                            <option value="Ubuntu">Ubuntu</option>
+                            <option value="PT Sans">PT Sans</option>
+                            <option value="Oxygen">Oxygen</option>
+                            <option value="Muli">Muli</option>
+                            <option value="Rubik">Rubik</option>
+                            <option value="Karla">Karla</option>
+                            <option value="Noto Sans">Noto Sans</option>
+                            <option value="Cabin">Cabin</option>
+                            <option value="Quicksand">Quicksand</option>
+                            <option value="Hind">Hind</option>
+                            <option value="Fira Sans">Fira Sans</option>
+                            <option value="Roboto Condensed">Roboto Condensed</option>
+                            <option value="Comfortaa">Comfortaa</option>
+                            <option value="Josefin Sans">Josefin Sans</option>
+                          </optgroup>
+                          <optgroup label="Google Fonts - Serif">
+                            <option value="Playfair Display">Playfair Display</option>
+                            <option value="Merriweather">Merriweather</option>
+                            <option value="Libre Baskerville">Libre Baskerville</option>
+                            <option value="Crimson Text">Crimson Text</option>
+                            <option value="Droid Serif">Droid Serif</option>
+                            <option value="Source Serif Pro">Source Serif Pro</option>
+                            <option value="PT Serif">PT Serif</option>
+                            <option value="Roboto Slab">Roboto Slab</option>
+                            <option value="Slabo 27px">Slabo 27px</option>
+                            <option value="Arvo">Arvo</option>
+                            <option value="Lora">Lora</option>
+                            <option value="Vollkorn">Vollkorn</option>
+                            <option value="Old Standard TT">Old Standard TT</option>
+                          </optgroup>
+                          <optgroup label="Google Fonts - Display & Decorative">
+                            <option value="Oswald">Oswald</option>
+                            <option value="Anton">Anton</option>
+                            <option value="Bebas Neue">Bebas Neue</option>
+                            <option value="Righteous">Righteous</option>
+                            <option value="Fredoka One">Fredoka One</option>
+                            <option value="Bangers">Bangers</option>
+                          </optgroup>
+                          <optgroup label="Google Fonts - Handwriting & Script">
+                            <option value="Indie Flower">Indie Flower</option>
+                            <option value="Dancing Script">Dancing Script</option>
+                            <option value="Pacifico">Pacifico</option>
+                            <option value="Lobster">Lobster</option>
+                            <option value="Satisfy">Satisfy</option>
+                            <option value="Shadows Into Light">Shadows Into Light</option>
+                            <option value="Kalam">Kalam</option>
+                            <option value="Caveat">Caveat</option>
+                          </optgroup>
+                          <optgroup label="Google Fonts - Monospace">
+                            <option value="Source Code Pro">Source Code Pro</option>
+                          </optgroup>
                         </select>
                       </div>
 
@@ -927,6 +1042,8 @@ function App() {
                   fontFamily: config.branding.fontFamily,
                   backgroundImage: config.branding.backgroundImage ? `url(${config.branding.backgroundImage})` : 'none',
                   backgroundColor: config.branding.backgroundImage ? 'transparent' : config.branding.backgroundColor,
+                  overflowY: 'hidden',
+                  height: '100%'
                 }}
               >
 
@@ -940,19 +1057,36 @@ function App() {
                     <div className="figma-top-section">
                       {/* Logo */}
                       {config.branding.logoUrl ? (
-                        <div className="figma-logo">
+                        <div className="figma-logo" onClick={() => triggerImageUpload('logo')} style={{cursor: 'pointer'}}>
                           <img src={config.branding.logoUrl} alt="Logo" className="figma-logo-img" />
                         </div>
                       ) : (
-                        <div className="figma-logo">
-                          <div style={{width: 150, height: 35, borderRadius: 8, background: 'rgba(255, 255, 255, 0.2)', border: '2px dashed rgba(255, 255, 255, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6}}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1.5">
-                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                              <circle cx="9" cy="9" r="2"/>
-                              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
-                            </svg>
-                            <span style={{color: 'rgba(255, 255, 255, 0.4)', fontSize: 11, fontWeight: 500}}>LOGO</span>
-                          </div>
+                        <div 
+                          className="figma-logo"
+                          onClick={() => triggerImageUpload('logo')} 
+                          style={{
+                            width: 150, 
+                            height: 35, 
+                            borderRadius: 8, 
+                            background: 'transparent', 
+                            border: '2px dashed rgba(255, 255, 255, 0.5)', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            flexDirection: 'row', 
+                            gap: 6,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.5" style={{pointerEvents: 'none'}}>
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="9" cy="9" r="2"/>
+                            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                          </svg>
+                          <span style={{color: 'rgba(255, 255, 255, 0.6)', fontSize: 11, fontWeight: 500, pointerEvents: 'none'}}>Click to upload logo</span>
                         </div>
                       )}
                       
@@ -964,15 +1098,38 @@ function App() {
                             <div style={{width: 295, height: 388, left: 0, top: 0, position: 'absolute', display: 'flex', flexDirection: 'column'}}>
                               <div style={{height: '60%', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 20}}>
                                 {config.content.poapImage ? (
-                                  <img style={{width: 200, height: 200, borderRadius: '50%', objectFit: 'cover'}} src={config.content.poapImage} alt="POAP" />
+                                  <img 
+                                    onClick={() => triggerImageUpload('poap')} 
+                                    style={{width: 200, height: 200, borderRadius: '50%', objectFit: 'cover', cursor: 'pointer'}} 
+                                    src={config.content.poapImage} 
+                                    alt="POAP" 
+                                  />
                                 ) : (
-                                  <div style={{width: 200, height: 200, borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)', border: '2px dashed rgba(255, 255, 255, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12}}>
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1.5">
+                                  <div 
+                                    onClick={() => triggerImageUpload('poap')} 
+                                    style={{
+                                      width: 200, 
+                                      height: 200, 
+                                      borderRadius: '50%', 
+                                      background: 'transparent', 
+                                      border: '2px dashed rgba(255, 255, 255, 0.5)', 
+                                      display: 'flex', 
+                                      alignItems: 'center', 
+                                      justifyContent: 'center', 
+                                      flexDirection: 'column', 
+                                      gap: 12,
+                                      cursor: 'pointer',
+                                      transition: 'all 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                  >
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.5" style={{pointerEvents: 'none'}}>
                                       <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                                       <circle cx="9" cy="9" r="2"/>
                                       <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
                                     </svg>
-                                    <span style={{color: 'rgba(255, 255, 255, 0.4)', fontSize: 12, fontWeight: 500}}>POAP Image</span>
+                                    <span style={{color: 'rgba(255, 255, 255, 0.6)', fontSize: 12, fontWeight: 500, pointerEvents: 'none'}}>Click to upload POAP</span>
                                   </div>
                                 )}
                               </div>
@@ -1143,19 +1300,36 @@ function App() {
                     <div className="figma-top-section">
                       {/* Logo - Same as form page */}
                       {config.branding.logoUrl ? (
-                        <div className="figma-logo">
+                        <div className="figma-logo" onClick={() => triggerImageUpload('logo')} style={{cursor: 'pointer'}}>
                           <img src={config.branding.logoUrl} alt="Logo" className="figma-logo-img" />
                         </div>
                       ) : (
-                        <div className="figma-logo">
-                          <div style={{width: 150, height: 35, borderRadius: 8, background: 'rgba(255, 255, 255, 0.2)', border: '2px dashed rgba(255, 255, 255, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6}}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1.5">
-                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                              <circle cx="9" cy="9" r="2"/>
-                              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
-                            </svg>
-                            <span style={{color: 'rgba(255, 255, 255, 0.4)', fontSize: 11, fontWeight: 500}}>LOGO</span>
-                          </div>
+                        <div 
+                          className="figma-logo"
+                          onClick={() => triggerImageUpload('logo')} 
+                          style={{
+                            width: 150, 
+                            height: 35, 
+                            borderRadius: 8, 
+                            background: 'transparent', 
+                            border: '2px dashed rgba(255, 255, 255, 0.5)', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            flexDirection: 'row', 
+                            gap: 6,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.5" style={{pointerEvents: 'none'}}>
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="9" cy="9" r="2"/>
+                            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                          </svg>
+                          <span style={{color: 'rgba(255, 255, 255, 0.6)', fontSize: 11, fontWeight: 500, pointerEvents: 'none'}}>Click to upload logo</span>
                         </div>
                       )}
                       
@@ -1170,15 +1344,38 @@ function App() {
                                   {config.content.congratulationsTitle}
                                 </h2>
                                 {config.content.poapImage ? (
-                                  <img style={{width: 200, height: 200, borderRadius: '50%', objectFit: 'cover'}} src={config.content.poapImage} alt="POAP" />
+                                  <img 
+                                    onClick={() => triggerImageUpload('poap')} 
+                                    style={{width: 200, height: 200, borderRadius: '50%', objectFit: 'cover', cursor: 'pointer'}} 
+                                    src={config.content.poapImage} 
+                                    alt="POAP" 
+                                  />
                                 ) : (
-                                  <div style={{width: 200, height: 200, borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)', border: '2px dashed rgba(255, 255, 255, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12}}>
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1.5">
+                                  <div 
+                                    onClick={() => triggerImageUpload('poap')} 
+                                    style={{
+                                      width: 200, 
+                                      height: 200, 
+                                      borderRadius: '50%', 
+                                      background: 'transparent', 
+                                      border: '2px dashed rgba(255, 255, 255, 0.5)', 
+                                      display: 'flex', 
+                                      alignItems: 'center', 
+                                      justifyContent: 'center', 
+                                      flexDirection: 'column', 
+                                      gap: 12,
+                                      cursor: 'pointer',
+                                      transition: 'all 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                  >
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.5" style={{pointerEvents: 'none'}}>
                                       <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                                       <circle cx="9" cy="9" r="2"/>
                                       <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
                                     </svg>
-                                    <span style={{color: 'rgba(255, 255, 255, 0.4)', fontSize: 12, fontWeight: 500}}>POAP Image</span>
+                                    <span style={{color: 'rgba(255, 255, 255, 0.6)', fontSize: 12, fontWeight: 500, pointerEvents: 'none'}}>Click to upload POAP</span>
                                   </div>
                                 )}
                               </div>
@@ -1209,19 +1406,36 @@ function App() {
                     <div className="figma-top-section">
                       {/* Logo */}
                       {config.branding.logoUrl ? (
-                        <div className="figma-logo">
+                        <div className="figma-logo" onClick={() => triggerImageUpload('logo')} style={{cursor: 'pointer'}}>
                           <img src={config.branding.logoUrl} alt="Logo" className="figma-logo-img" />
                         </div>
                       ) : (
-                        <div className="figma-logo">
-                          <div style={{width: 150, height: 35, borderRadius: 8, background: 'rgba(255, 255, 255, 0.2)', border: '2px dashed rgba(255, 255, 255, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6}}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1.5">
-                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                              <circle cx="9" cy="9" r="2"/>
-                              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
-                            </svg>
-                            <span style={{color: 'rgba(255, 255, 255, 0.4)', fontSize: 11, fontWeight: 500}}>LOGO</span>
-                          </div>
+                        <div 
+                          className="figma-logo"
+                          onClick={() => triggerImageUpload('logo')} 
+                          style={{
+                            width: 150, 
+                            height: 35, 
+                            borderRadius: 8, 
+                            background: 'transparent', 
+                            border: '2px dashed rgba(255, 255, 255, 0.5)', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            flexDirection: 'row', 
+                            gap: 6,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.5" style={{pointerEvents: 'none'}}>
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="9" cy="9" r="2"/>
+                            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                          </svg>
+                          <span style={{color: 'rgba(255, 255, 255, 0.6)', fontSize: 11, fontWeight: 500, pointerEvents: 'none'}}>Click to upload logo</span>
                         </div>
                       )}
                       
@@ -1241,15 +1455,38 @@ function App() {
                             <div style={{width: 295, height: 388, left: 0, top: 0, position: 'absolute', display: 'flex', flexDirection: 'column'}}>
                               <div style={{height: '60%', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 20}}>
                                 {config.content.poapImage ? (
-                                  <img style={{width: 200, height: 200, borderRadius: '50%', objectFit: 'cover'}} src={config.content.poapImage} alt="POAP" />
+                                  <img 
+                                    onClick={() => triggerImageUpload('poap')} 
+                                    style={{width: 200, height: 200, borderRadius: '50%', objectFit: 'cover', cursor: 'pointer'}} 
+                                    src={config.content.poapImage} 
+                                    alt="POAP" 
+                                  />
                                 ) : (
-                                  <div style={{width: 200, height: 200, borderRadius: '50%', background: 'rgba(255, 255, 255, 0.2)', border: '2px dashed rgba(255, 255, 255, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12}}>
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.4)" strokeWidth="1.5">
+                                  <div 
+                                    onClick={() => triggerImageUpload('poap')} 
+                                    style={{
+                                      width: 200, 
+                                      height: 200, 
+                                      borderRadius: '50%', 
+                                      background: 'transparent', 
+                                      border: '2px dashed rgba(255, 255, 255, 0.5)', 
+                                      display: 'flex', 
+                                      alignItems: 'center', 
+                                      justifyContent: 'center', 
+                                      flexDirection: 'column', 
+                                      gap: 12,
+                                      cursor: 'pointer',
+                                      transition: 'all 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                  >
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.5" style={{pointerEvents: 'none'}}>
                                       <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                                       <circle cx="9" cy="9" r="2"/>
                                       <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
                                     </svg>
-                                    <span style={{color: 'rgba(255, 255, 255, 0.4)', fontSize: 12, fontWeight: 500}}>POAP Image</span>
+                                    <span style={{color: 'rgba(255, 255, 255, 0.6)', fontSize: 12, fontWeight: 500, pointerEvents: 'none'}}>Click to upload POAP</span>
                                   </div>
                                 )}
                               </div>
@@ -1266,17 +1503,20 @@ function App() {
                       {/* CTA Button below card */}
                       <div style={{display: 'flex', justifyContent: 'center', marginTop: 60}}>
                         <button style={{
+                          width: '303px',
+                          height: '44px',
                           background: config.branding.buttonColor || '#3b82f6',
                           color: config.branding.checkboxTextColor || '#ffffff',
                           border: 'none',
-                          borderRadius: 25,
-                          padding: '12px 32px',
-                          fontSize: 16,
+                          borderRadius: '50px',
+                          fontSize: '0.875rem',
                           fontWeight: '600',
                           fontFamily: config.branding.fontFamily,
                           cursor: 'pointer',
-                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                          transition: 'all 0.2s ease'
+                          transition: 'all 0.2s ease',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
                         }}>
                           {config.content.successCtaText}
                         </button>

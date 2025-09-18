@@ -24,10 +24,10 @@ function App() {
   const getDefaultConfig = () => ({
     branding: {
       logoUrl: '',
-      primaryColor: '#6366f1',
+      primaryColor: '#ffffff',
       secondaryColor: '#f3f4f6',
       buttonColor: '#6366f1',
-      fontFamily: 'Arial',
+      fontFamily: config.branding.fontFamily,
       backgroundImage: '',
       backgroundColor: '#6b7280',
       descriptionColor: '#6b7280',
@@ -43,7 +43,6 @@ function App() {
       poapDescription: 'Claim your proof of attendance for this amazing event!',
       claimButtonText: 'I want this',
       loadingText: 'We are now taking you to your collectible page...',
-      congratsTitle: 'CONGRATULATIONS!',
       congratsSubtitle: 'You have just collected:',
       confirmationText: 'Successfully claimed!',
       finalCtaText: 'Continue',
@@ -512,155 +511,6 @@ function App() {
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="config-card">
-                <div className="card-header">
-                  <h3>📝 Content</h3>
-                  <p>Customize text and messaging</p>
-                </div>
-                <div className="card-content">
-                  <div className="input-group">
-                    <label className="input-label">POAP Title</label>
-                    <input
-                      type="text"
-                      value={config.content.poapTitle}
-                      onChange={(e) => handleConfigChange('content', 'poapTitle', e.target.value)}
-                      className="text-input"
-                      placeholder="Enter your POAP title"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label">Description</label>
-                    <textarea
-                      value={config.content.poapDescription}
-                      onChange={(e) => handleConfigChange('content', 'poapDescription', e.target.value)}
-                      className="textarea-input"
-                      rows="3"
-                      placeholder="Describe your event or POAP"
-                    />
-                  </div>
-
-                  <div className="input-row">
-                    <div className="input-group">
-                      <label className="input-label">Claim Button Text</label>
-                      <input
-                        type="text"
-                        value={config.content.claimButtonText}
-                        onChange={(e) => handleConfigChange('content', 'claimButtonText', e.target.value)}
-                        className="text-input"
-                      />
-                    </div>
-
-                    <div className="input-group">
-                      <label className="input-label">Loading Text</label>
-                      <input
-                        type="text"
-                        value={config.content.loadingText}
-                        onChange={(e) => handleConfigChange('content', 'loadingText', e.target.value)}
-                        className="text-input"
-                      />
-                    </div>
-                    <div className="input-group">
-                      <label className="input-label">Congratulations Title</label>
-                      <input
-                        type="text"
-                        value={config.content.congratulationsTitle}
-                        onChange={(e) => handleConfigChange('content', 'congratulationsTitle', e.target.value)}
-                        className="text-input"
-                      />
-                    </div>
-                    <div className="input-group">
-                      <label className="input-label">Success CTA Text</label>
-                      <input
-                        type="text"
-                        value={config.content.successCtaText}
-                        onChange={(e) => handleConfigChange('content', 'successCtaText', e.target.value)}
-                        className="text-input"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="input-row">
-                    <div className="input-group">
-                      <label className="input-label">Congratulations Title</label>
-                      <input
-                        type="text"
-                        value={config.content.congratsTitle}
-                        onChange={(e) => handleConfigChange('content', 'congratsTitle', e.target.value)}
-                        className="text-input"
-                        placeholder="CONGRATULATIONS!"
-                      />
-                    </div>
-
-                    <div className="input-group">
-                      <label className="input-label">Congratulations Subtitle</label>
-                      <input
-                        type="text"
-                        value={config.content.congratsSubtitle}
-                        onChange={(e) => handleConfigChange('content', 'congratsSubtitle', e.target.value)}
-                        className="text-input"
-                        placeholder="You have just collected:"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label">Success Page Title</label>
-                    <input
-                      type="text"
-                      value={config.content.successTitle}
-                      onChange={(e) => handleConfigChange('content', 'successTitle', e.target.value)}
-                      className="text-input"
-                    />
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label">Success Message</label>
-                    <textarea
-                      value={config.content.successMessage}
-                      onChange={(e) => handleConfigChange('content', 'successMessage', e.target.value)}
-                      className="textarea-input"
-                      rows="2"
-                    />
-                  </div>
-
-                  <div className="input-row">
-                    <div className="input-group">
-                      <label className="input-label">Final CTA Text</label>
-                      <input
-                        type="text"
-                        value={config.content.finalCtaText}
-                        onChange={(e) => handleConfigChange('content', 'finalCtaText', e.target.value)}
-                        className="text-input"
-                      />
-                    </div>
-
-                    <div className="input-group">
-                      <label className="input-label">Final CTA Link</label>
-                      <input
-                        type="url"
-                        placeholder="https://example.com"
-                        value={config.content.finalCtaLink}
-                        onChange={(e) => handleConfigChange('content', 'finalCtaLink', e.target.value)}
-                        className="text-input"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="input-group">
-                    <label className="input-label">Footer Text</label>
-                    <input
-                      type="text"
-                      value={config.content.footerText}
-                      onChange={(e) => handleConfigChange('content', 'footerText', e.target.value)}
-                      className="text-input"
-                      placeholder="Terms & Conditions | Privacy Policy"
-                    />
-                  </div>
-                </div>
-              </div>
-
               {/* Design & Styling */}
               <div className="config-card">
                 <div className="card-header">
@@ -779,6 +629,159 @@ function App() {
                           <option value="1.5rem">XXL</option>
                         </select>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="config-card">
+                <div className="card-header">
+                  <h3>📝 Content</h3>
+                  <p>Customize text and messaging</p>
+                </div>
+                <div className="card-content">
+                  {/* Form Page Content */}
+                  <div style={{marginBottom: '24px', padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0'}}>
+                    <h4 style={{color: '#6366f1', fontSize: '14px', fontWeight: '600', marginBottom: '12px', margin: '0 0 12px 0'}}>📋 Form Page</h4>
+                    <div className="input-group">
+                      <label className="input-label">POAP Title</label>
+                      <input
+                        type="text"
+                        value={config.content.poapTitle}
+                        onChange={(e) => handleConfigChange('content', 'poapTitle', e.target.value)}
+                        className="text-input"
+                        placeholder="Enter your POAP title"
+                      />
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label">Description</label>
+                      <textarea
+                        value={config.content.poapDescription}
+                        onChange={(e) => handleConfigChange('content', 'poapDescription', e.target.value)}
+                        className="textarea-input"
+                        rows="3"
+                        placeholder="Describe your event or POAP"
+                      />
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label">Claim Button Text</label>
+                      <input
+                        type="text"
+                        value={config.content.claimButtonText}
+                        onChange={(e) => handleConfigChange('content', 'claimButtonText', e.target.value)}
+                        className="text-input"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Loading Page Content */}
+                  <div style={{marginBottom: '24px', padding: '16px', backgroundColor: '#fef3c7', borderRadius: '8px', border: '1px solid #fed7aa'}}>
+                    <h4 style={{color: '#d97706', fontSize: '14px', fontWeight: '600', marginBottom: '12px', margin: '0 0 12px 0'}}>⏳ Loading Page</h4>
+                    <div className="input-row">
+                      <div className="input-group">
+                        <label className="input-label">Congratulations Title</label>
+                        <input
+                          type="text"
+                          value={config.content.congratulationsTitle}
+                          onChange={(e) => handleConfigChange('content', 'congratulationsTitle', e.target.value)}
+                          className="text-input"
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">Loading Text</label>
+                        <input
+                          type="text"
+                          value={config.content.loadingText}
+                          onChange={(e) => handleConfigChange('content', 'loadingText', e.target.value)}
+                          className="text-input"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Success Page Content */}
+                  <div style={{marginBottom: '24px', padding: '16px', backgroundColor: '#dcfce7', borderRadius: '8px', border: '1px solid #bbf7d0'}}>
+                    <h4 style={{color: '#16a34a', fontSize: '14px', fontWeight: '600', marginBottom: '12px', margin: '0 0 12px 0'}}>✅ Success Page</h4>
+                    <div className="input-row">
+                      <div className="input-group">
+                        <label className="input-label">Success CTA Text</label>
+                        <input
+                          type="text"
+                          value={config.content.successCtaText}
+                          onChange={(e) => handleConfigChange('content', 'successCtaText', e.target.value)}
+                          className="text-input"
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">Congratulations Subtitle</label>
+                        <input
+                          type="text"
+                          value={config.content.congratsSubtitle}
+                          onChange={(e) => handleConfigChange('content', 'congratsSubtitle', e.target.value)}
+                          className="text-input"
+                          placeholder="You have just collected:"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label">Success Page Title</label>
+                      <input
+                        type="text"
+                        value={config.content.successTitle}
+                        onChange={(e) => handleConfigChange('content', 'successTitle', e.target.value)}
+                        className="text-input"
+                      />
+                    </div>
+
+                    <div className="input-group">
+                      <label className="input-label">Success Message</label>
+                      <textarea
+                        value={config.content.successMessage}
+                        onChange={(e) => handleConfigChange('content', 'successMessage', e.target.value)}
+                        className="textarea-input"
+                        rows="2"
+                      />
+                    </div>
+
+                    <div className="input-row">
+                      <div className="input-group">
+                        <label className="input-label">Final CTA Text</label>
+                        <input
+                          type="text"
+                          value={config.content.finalCtaText}
+                          onChange={(e) => handleConfigChange('content', 'finalCtaText', e.target.value)}
+                          className="text-input"
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">Final CTA Link</label>
+                        <input
+                          type="url"
+                          placeholder="https://example.com"
+                          value={config.content.finalCtaLink}
+                          onChange={(e) => handleConfigChange('content', 'finalCtaLink', e.target.value)}
+                          className="text-input"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Global Content */}
+                  <div style={{padding: '16px', backgroundColor: '#f3f4f6', borderRadius: '8px', border: '1px solid #d1d5db'}}>
+                    <h4 style={{color: '#374151', fontSize: '14px', fontWeight: '600', marginBottom: '12px', margin: '0 0 12px 0'}}>🌐 Global</h4>
+                    <div className="input-group">
+                      <label className="input-label">Footer Text</label>
+                      <input
+                        type="text"
+                        value={config.content.footerText}
+                        onChange={(e) => handleConfigChange('content', 'footerText', e.target.value)}
+                        className="text-input"
+                        placeholder="Terms & Conditions | Privacy Policy"
+                      />
                     </div>
                   </div>
                 </div>
@@ -974,7 +977,7 @@ function App() {
                                 )}
                               </div>
                               <div style={{height: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 20px'}}>
-                                <h3 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: config.branding.titleFontSize, fontFamily: 'Arial', fontWeight: '600'}}>
+                                <h3 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: config.branding.titleFontSize, fontFamily: config.branding.fontFamily, fontWeight: '600'}}>
                                   {config.content.poapTitle}
                                 </h3>
                               </div>
@@ -1163,7 +1166,7 @@ function App() {
                           <div style={{width: 295, height: 442, left: 4, top: 4, position: 'absolute', background: 'linear-gradient(134deg, rgba(255, 255, 255, 0.20) 11%, rgba(255, 255, 255, 0.01) 28%, rgba(255, 255, 255, 0.01) 62%, rgba(255, 255, 255, 0.20) 83%)', borderRadius: 12, outline: '1px rgba(255, 255, 255, 0.30) solid', outlineOffset: '-1px', backdropFilter: 'blur(25px)'}}>
                             <div style={{width: 295, height: 442, left: 0, top: 0, position: 'absolute', display: 'flex', flexDirection: 'column'}}>
                               <div style={{height: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20, gap: 16}}>
-                                <h2 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: 18, fontFamily: 'Arial', fontWeight: '600'}}>
+                                <h2 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: 18, fontFamily: config.branding.fontFamily, fontWeight: '600'}}>
                                   {config.content.congratulationsTitle}
                                 </h2>
                                 {config.content.poapImage ? (
@@ -1180,7 +1183,7 @@ function App() {
                                 )}
                               </div>
                               <div style={{height: '40%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '0 20px', gap: '12px'}}>
-                                <h3 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: config.branding.titleFontSize, fontFamily: 'Arial', fontWeight: '600'}}>
+                                <h3 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: config.branding.titleFontSize, fontFamily: config.branding.fontFamily, fontWeight: '600'}}>
                                   {config.content.poapTitle}
                                 </h3>
                                 <div className="simple-loader"></div>
@@ -1251,7 +1254,7 @@ function App() {
                                 )}
                               </div>
                               <div style={{height: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 20px'}}>
-                                <h3 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: config.branding.titleFontSize, fontFamily: 'Arial', fontWeight: '600'}}>
+                                <h3 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: config.branding.titleFontSize, fontFamily: config.branding.fontFamily, fontWeight: '600'}}>
                                   {config.content.poapTitle}
                                 </h3>
                               </div>
@@ -1270,7 +1273,7 @@ function App() {
                           padding: '12px 32px',
                           fontSize: 16,
                           fontWeight: '600',
-                          fontFamily: 'Arial',
+                          fontFamily: config.branding.fontFamily,
                           cursor: 'pointer',
                           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                           transition: 'all 0.2s ease'

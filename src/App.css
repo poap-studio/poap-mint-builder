@@ -415,6 +415,29 @@ html, body {
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  padding: 0;
+}
+
+.color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+}
+
+.color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.color-input::-moz-color-swatch {
+  border: none;
+  border-radius: 8px;
 }
 
 .color-input:hover {

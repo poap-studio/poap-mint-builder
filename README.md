@@ -4,7 +4,7 @@ A powerful, customizable POAP (Proof of Attendance Protocol) mint page builder t
 
 ## 🚀 Live Demo
 
-**[Try the Live Demo →](https://poap-mint-builder-2233blkc9-adminpoapfrs-projects.vercel.app)**
+**[Try the Live Demo →](https://poap-mint-builder.vercel.app)**
 
 ## ✨ Features
 

@@ -39,19 +39,19 @@ function App() {
     },
     content: {
       poapImage: '',
-      poapTitle: 'POAP Event Title',
-      poapDescription: 'Claim your proof of attendance for this amazing event!',
-      claimButtonText: 'I want this',
-      loadingText: 'We are now taking you to your collectible page...',
+      poapTitle: 'Web3 Summit 2024',
+      poapDescription: 'Join the future of decentralized technology! Claim your exclusive Web3 Summit 2024 POAP to commemorate your participation in this groundbreaking event.',
+      claimButtonText: 'Claim My POAP',
+      loadingText: 'Processing your POAP claim...',
       congratsSubtitle: 'You have just collected:',
       confirmationText: 'Successfully claimed!',
-      finalCtaText: 'Continue',
-      finalCtaLink: '',
-      successTitle: 'POAP Claimed Successfully!',
-      successMessage: 'Your POAP has been added to your collection.',
+      finalCtaText: 'Continue to Event',
+      finalCtaLink: 'https://web3summit2024.com',
+      successTitle: 'POAP Successfully Claimed! 🎉',
+      successMessage: 'Your Web3 Summit 2024 POAP has been added to your collection. Thank you for being part of this amazing community!',
       congratulationsTitle: 'Congratulations!',
-      successCtaText: 'View POAP',
-      footerText: 'Terms & Conditions | Privacy Policy',
+      successCtaText: 'View in Wallet',
+      footerText: 'Powered by POAP Protocol | Privacy Policy',
     },
     settings: {
       claimMethod: 'both', // 'wallet', 'email', 'both'
@@ -1234,7 +1234,7 @@ function App() {
                               OWNED BY
                             </div>
                             <div style={{fontSize: 20, fontFamily: 'Arial', fontWeight: 'bold', color: config.branding.primaryColor, lineHeight: 1}}>
-                              JOHN DOE
+                              0x742d...5e9A
                             </div>
                           </div>
                           <div style={{width: 295, height: 388, left: 4, top: 4, position: 'absolute', background: 'linear-gradient(134deg, rgba(255, 255, 255, 0.20) 11%, rgba(255, 255, 255, 0.01) 28%, rgba(255, 255, 255, 0.01) 62%, rgba(255, 255, 255, 0.20) 83%)', borderRadius: 12, outline: '1px rgba(255, 255, 255, 0.30) solid', outlineOffset: '-1px', backdropFilter: 'blur(25px)'}}>

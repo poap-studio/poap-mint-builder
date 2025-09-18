@@ -27,7 +27,7 @@ function App() {
       primaryColor: '#ffffff',
       secondaryColor: '#f3f4f6',
       buttonColor: '#6366f1',
-      fontFamily: config.branding.fontFamily,
+      fontFamily: 'Inter',
       backgroundImage: '',
       backgroundColor: '#6b7280',
       descriptionColor: '#6b7280',

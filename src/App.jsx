@@ -5,7 +5,7 @@ function App() {
   const [currentView, setCurrentView] = useState('dashboard') // 'dashboard' or 'editor'
   const [pages, setPages] = useState([])
   const [currentPageId, setCurrentPageId] = useState(null)
-  const [previewScreen, setPreviewScreen] = useState('form') // 'form', 'loading', 'success'
+  const [previewScreen, setPreviewScreen] = useState('mint') // 'mint', 'loading', 'success'
   const [showForm, setShowForm] = useState(false) // For sliding form animation
   const [backdropFading, setBackdropFading] = useState(false) // For backdrop fade animation
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved', 'saving', 'unsaved'
@@ -54,18 +54,24 @@ function App() {
       fontFamily: 'Arial',
       backgroundImage: '',
       backgroundColor: '#6b7280',
+      footerLogo: '',
       descriptionColor: '#6b7280',
       checkboxTextColor: '#ffffff',
       titleFontSize: '1.4rem',
       ctaFontSize: '1.05rem',
       sliderBackgroundColor: '#171717',
       sliderTextColor: '#ffffff',
+      cardColor: '#ffffff',
+      cardTitleColor: '#000000',
+      customFont: '',
     },
     content: {
       poapImage: '',
       poapTitle: 'Web3 Summit 2024',
       poapDescription: 'Join the future of decentralized technology! Claim your exclusive Web3 Summit 2024 POAP to commemorate your participation in this groundbreaking event.',
       claimButtonText: 'Claim My POAP',
+      eventDate: '',
+      eventLocation: '',
       loadingText: 'Processing your POAP claim...',
       congratsSubtitle: 'You have just collected:',
       confirmationText: 'Successfully claimed!',
@@ -128,12 +134,20 @@ function App() {
   const triggerImageUpload = (imageType) => {
     const input = document.createElement('input')
     input.type = 'file'
-    input.accept = 'image/*'
+    if (imageType === 'customFont') {
+      input.accept = '.woff,.woff2,.ttf,.otf'
+    } else {
+      input.accept = 'image/*'
+    }
     input.onchange = (e) => {
       if (imageType === 'logo') {
         handleImageUpload('branding', 'logoUrl', e)
       } else if (imageType === 'poap') {
         handleImageUpload('content', 'poapImage', e)
+      } else if (imageType === 'footerLogo') {
+        handleImageUpload('branding', 'footerLogo', e)
+      } else if (imageType === 'customFont') {
+        handleImageUpload('branding', 'customFont', e)
       }
     }
     input.click()
@@ -507,33 +521,6 @@ function App() {
                     </div>
 
                     <div className="media-upload">
-                      <label className="upload-label">POAP Image</label>
-                      <div className="file-input-container">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleImageUpload('content', 'poapImage', e)}
-                          className={`file-input ${config.content.poapImage ? 'has-image' : ''}`}
-                        />
-                        {config.content.poapImage && (
-                          <>
-                            <div className="file-preview-image">
-                              <img src={config.content.poapImage} alt="POAP preview" />
-                            </div>
-                            <button 
-                              type="button"
-                              onClick={() => handleConfigChange('content', 'poapImage', '')}
-                              className="delete-image-btn"
-                              title="Delete POAP image"
-                            >
-                              ×
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="media-upload">
                       <label className="upload-label">Background Image</label>
                       <div className="file-input-container">
                         <input
@@ -559,6 +546,33 @@ function App() {
                         )}
                       </div>
                     </div>
+
+                    <div className="media-upload">
+                      <label className="upload-label">Footer Logo</label>
+                      <div className="file-input-container">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload('branding', 'footerLogo', e)}
+                          className={`file-input ${config.branding.footerLogo ? 'has-image' : ''}`}
+                        />
+                        {config.branding.footerLogo && (
+                          <>
+                            <div className="file-preview-image">
+                              <img src={config.branding.footerLogo} alt="Footer logo preview" />
+                            </div>
+                            <button 
+                              type="button"
+                              onClick={() => handleConfigChange('branding', 'footerLogo', '')}
+                              className="delete-image-btn"
+                              title="Delete footer logo"
+                            >
+                              ×
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -572,7 +586,7 @@ function App() {
                 <div className="card-content">
                   <div className="color-grid">
                     <div className="color-input-group">
-                      <label className="color-label">Background</label>
+                      <label className="color-label">Page background</label>
                       <input
                         type="color"
                         value={config.branding.backgroundColor}
@@ -582,37 +596,7 @@ function App() {
                     </div>
 
                     <div className="color-input-group">
-                      <label className="color-label">Title Color</label>
-                      <input
-                        type="color"
-                        value={config.branding.primaryColor}
-                        onChange={(e) => handleConfigChange('branding', 'primaryColor', e.target.value)}
-                        className="color-input"
-                      />
-                    </div>
-
-                    <div className="color-input-group">
-                      <label className="color-label">CTA Color</label>
-                      <input
-                        type="color"
-                        value={config.branding.buttonColor}
-                        onChange={(e) => handleConfigChange('branding', 'buttonColor', e.target.value)}
-                        className="color-input"
-                      />
-                    </div>
-
-                    <div className="color-input-group">
-                      <label className="color-label">CTA Text Color</label>
-                      <input
-                        type="color"
-                        value={config.branding.checkboxTextColor}
-                        onChange={(e) => handleConfigChange('branding', 'checkboxTextColor', e.target.value)}
-                        className="color-input"
-                      />
-                    </div>
-
-                    <div className="color-input-group">
-                      <label className="color-label">Slider Background</label>
+                      <label className="color-label">Content background</label>
                       <input
                         type="color"
                         value={config.branding.sliderBackgroundColor}
@@ -622,11 +606,51 @@ function App() {
                     </div>
 
                     <div className="color-input-group">
-                      <label className="color-label">Slider Text</label>
+                      <label className="color-label">Button Color</label>
+                      <input
+                        type="color"
+                        value={config.branding.buttonColor}
+                        onChange={(e) => handleConfigChange('branding', 'buttonColor', e.target.value)}
+                        className="color-input"
+                      />
+                    </div>
+
+                    <div className="color-input-group">
+                      <label className="color-label">Button text color</label>
+                      <input
+                        type="color"
+                        value={config.branding.checkboxTextColor}
+                        onChange={(e) => handleConfigChange('branding', 'checkboxTextColor', e.target.value)}
+                        className="color-input"
+                      />
+                    </div>
+
+                    <div className="color-input-group">
+                      <label className="color-label">Text</label>
                       <input
                         type="color"
                         value={config.branding.sliderTextColor}
                         onChange={(e) => handleConfigChange('branding', 'sliderTextColor', e.target.value)}
+                        className="color-input"
+                      />
+                    </div>
+
+                    <div className="color-input-group">
+                      <label className="color-label">Card</label>
+                      <input
+                        type="color"
+                        value={config.branding.cardColor}
+                        onChange={(e) => handleConfigChange('branding', 'cardColor', e.target.value)}
+                        className="color-input"
+                      />
+                    </div>
+
+                    <div className="color-input-group">
+                      <label className="color-label">Card title</label>
+                      <input
+                        type="color"
+                        value={config.branding.cardTitleColor}
+                        onChange={(e) => handleConfigChange('branding', 'cardTitleColor', e.target.value)}
                         className="color-input"
                       />
                     </div>
@@ -713,37 +737,32 @@ function App() {
                       </div>
 
                       <div className="input-group">
-                        <label className="input-label">Title Size</label>
-                        <select
-                          value={config.branding.titleFontSize}
-                          onChange={(e) => handleConfigChange('branding', 'titleFontSize', e.target.value)}
-                          className="select-input"
-                        >
-                          <option value="1.0rem">Small</option>
-                          <option value="1.2rem">Medium Small</option>
-                          <option value="1.4rem">Medium</option>
-                          <option value="1.6rem">Medium Large</option>
-                          <option value="1.8rem">Large</option>
-                          <option value="2.0rem">Extra Large</option>
-                          <option value="2.4rem">XXL</option>
-                        </select>
+                        <label className="input-label">Custom Font</label>
+                        <div className="file-input-container">
+                          <input
+                            type="file"
+                            accept=".woff,.woff2,.ttf,.otf"
+                            onChange={(e) => handleImageUpload('branding', 'customFont', e)}
+                            className={`file-input ${config.branding.customFont ? 'has-image' : ''}`}
+                          />
+                          {config.branding.customFont && (
+                            <>
+                              <div className="file-preview-text">
+                                <span>Font uploaded</span>
+                              </div>
+                              <button 
+                                type="button"
+                                onClick={() => handleConfigChange('branding', 'customFont', '')}
+                                className="delete-image-btn"
+                                title="Delete custom font"
+                              >
+                                ×
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
 
-                      <div className="input-group">
-                        <label className="input-label">Button Size</label>
-                        <select
-                          value={config.branding.ctaFontSize}
-                          onChange={(e) => handleConfigChange('branding', 'ctaFontSize', e.target.value)}
-                          className="select-input"
-                        >
-                          <option value="0.875rem">Small</option>
-                          <option value="1.0rem">Medium</option>
-                          <option value="1.05rem">Medium Large</option>
-                          <option value="1.125rem">Large</option>
-                          <option value="1.25rem">Extra Large</option>
-                          <option value="1.5rem">XXL</option>
-                        </select>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -758,9 +777,37 @@ function App() {
                 <div className="card-content">
                   {/* Form Page Content */}
                   <div style={{marginBottom: '24px', padding: '16px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0'}}>
-                    <h4 style={{color: '#6366f1', fontSize: '14px', fontWeight: '600', marginBottom: '12px', margin: '0 0 12px 0'}}>📋 Form Page</h4>
+                    <h4 style={{color: '#6366f1', fontSize: '14px', fontWeight: '600', marginBottom: '12px', margin: '0 0 12px 0'}}>📋 Mint Page</h4>
+                    
+                    <div className="media-upload">
+                      <label className="upload-label">My POAP Image</label>
+                      <div className="file-input-container">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload('content', 'poapImage', e)}
+                          className={`file-input ${config.content.poapImage ? 'has-image' : ''}`}
+                        />
+                        {config.content.poapImage && (
+                          <>
+                            <div className="file-preview-image">
+                              <img src={config.content.poapImage} alt="POAP preview" />
+                            </div>
+                            <button 
+                              type="button"
+                              onClick={() => handleConfigChange('content', 'poapImage', '')}
+                              className="delete-image-btn"
+                              title="Delete POAP image"
+                            >
+                              ×
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
                     <div className="input-group">
-                      <label className="input-label">POAP Title</label>
+                      <label className="input-label">My POAP title</label>
                       <input
                         type="text"
                         value={config.content.poapTitle}
@@ -771,7 +818,7 @@ function App() {
                     </div>
 
                     <div className="input-group">
-                      <label className="input-label">Description</label>
+                      <label className="input-label">My POAP Description</label>
                       <textarea
                         value={config.content.poapDescription}
                         onChange={(e) => handleConfigChange('content', 'poapDescription', e.target.value)}
@@ -782,7 +829,7 @@ function App() {
                     </div>
 
                     <div className="input-group">
-                      <label className="input-label">Claim Button Text</label>
+                      <label className="input-label">Button Text</label>
                       <input
                         type="text"
                         value={config.content.claimButtonText}
@@ -790,28 +837,25 @@ function App() {
                         className="text-input"
                       />
                     </div>
-                  </div>
 
-                  {/* Loading Page Content */}
-                  <div style={{marginBottom: '24px', padding: '16px', backgroundColor: '#fef3c7', borderRadius: '8px', border: '1px solid #fed7aa'}}>
-                    <h4 style={{color: '#d97706', fontSize: '14px', fontWeight: '600', marginBottom: '12px', margin: '0 0 12px 0'}}>⏳ Loading Page</h4>
                     <div className="input-row">
                       <div className="input-group">
-                        <label className="input-label">Congratulations Title</label>
+                        <label className="input-label">Event Date</label>
                         <input
-                          type="text"
-                          value={config.content.congratulationsTitle}
-                          onChange={(e) => handleConfigChange('content', 'congratulationsTitle', e.target.value)}
+                          type="date"
+                          value={config.content.eventDate}
+                          onChange={(e) => handleConfigChange('content', 'eventDate', e.target.value)}
                           className="text-input"
                         />
                       </div>
                       <div className="input-group">
-                        <label className="input-label">Loading Text</label>
+                        <label className="input-label">Event Location</label>
                         <input
                           type="text"
-                          value={config.content.loadingText}
-                          onChange={(e) => handleConfigChange('content', 'loadingText', e.target.value)}
+                          value={config.content.eventLocation}
+                          onChange={(e) => handleConfigChange('content', 'eventLocation', e.target.value)}
                           className="text-input"
+                          placeholder="Enter event location"
                         />
                       </div>
                     </div>
@@ -830,26 +874,6 @@ function App() {
                           className="text-input"
                         />
                       </div>
-                      <div className="input-group">
-                        <label className="input-label">Congratulations Subtitle</label>
-                        <input
-                          type="text"
-                          value={config.content.congratsSubtitle}
-                          onChange={(e) => handleConfigChange('content', 'congratsSubtitle', e.target.value)}
-                          className="text-input"
-                          placeholder="You have just collected:"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="input-group">
-                      <label className="input-label">Success Page Title</label>
-                      <input
-                        type="text"
-                        value={config.content.successTitle}
-                        onChange={(e) => handleConfigChange('content', 'successTitle', e.target.value)}
-                        className="text-input"
-                      />
                     </div>
 
                     <div className="input-group">
@@ -864,16 +888,7 @@ function App() {
 
                     <div className="input-row">
                       <div className="input-group">
-                        <label className="input-label">Final CTA Text</label>
-                        <input
-                          type="text"
-                          value={config.content.finalCtaText}
-                          onChange={(e) => handleConfigChange('content', 'finalCtaText', e.target.value)}
-                          className="text-input"
-                        />
-                      </div>
-                      <div className="input-group">
-                        <label className="input-label">Final CTA Link</label>
+                        <label className="input-label">Success CTA URL</label>
                         <input
                           type="url"
                           placeholder="https://example.com"
@@ -885,20 +900,6 @@ function App() {
                     </div>
                   </div>
 
-                  {/* Global Content */}
-                  <div style={{padding: '16px', backgroundColor: '#f3f4f6', borderRadius: '8px', border: '1px solid #d1d5db'}}>
-                    <h4 style={{color: '#374151', fontSize: '14px', fontWeight: '600', marginBottom: '12px', margin: '0 0 12px 0'}}>🌐 Global</h4>
-                    <div className="input-group">
-                      <label className="input-label">Footer Text</label>
-                      <input
-                        type="text"
-                        value={config.content.footerText}
-                        onChange={(e) => handleConfigChange('content', 'footerText', e.target.value)}
-                        className="text-input"
-                        placeholder="Terms & Conditions | Privacy Policy"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -1010,11 +1011,11 @@ function App() {
           <div className="screen-navigation">
             <div className="nav-tabs">
               <button 
-                className={`nav-tab ${previewScreen === 'form' ? 'active' : ''}`}
-                onClick={() => setPreviewScreen('form')}
+                className={`nav-tab ${previewScreen === 'mint' ? 'active' : ''}`}
+                onClick={() => setPreviewScreen('mint')}
               >
                 <span className="tab-icon">📝</span>
-                <span className="tab-label">Form</span>
+                <span className="tab-label">Mint</span>
               </button>
               <button 
                 className={`nav-tab ${previewScreen === 'loading' ? 'active' : ''}`}
@@ -1048,7 +1049,7 @@ function App() {
               >
 
                 {/* Form Screen Content - Exact Figma Clone */}
-                {previewScreen === 'form' && (
+                {previewScreen === 'mint' && (
                   <>
                     {/* Status Bar Space */}
                     <div className="figma-status-space"></div>
@@ -1182,12 +1183,12 @@ function App() {
                         {/* Title and Details */}
                         <div className="figma-text-section">
                           <div className="figma-title-details">
-                            <h2 className="figma-details-title" style={{ color: config.branding.sliderTextColor }}>{config.content.poapTitle}</h2>
+                            <h2 className="figma-details-title" style={{ color: config.branding.sliderTextColor }}>Get your collectible</h2>
                             <div className="figma-details-divider" style={{ background: config.branding.sliderTextColor }}></div>
                           </div>
                           
                           <p className="figma-description" style={{ color: config.branding.sliderTextColor }}>
-                            {config.content.poapDescription}
+                            To mint your collectible we need a few details:
                           </p>
                         </div>
                         
@@ -1341,7 +1342,7 @@ function App() {
                             <div style={{width: 295, height: 442, left: 0, top: 0, position: 'absolute', display: 'flex', flexDirection: 'column'}}>
                               <div style={{height: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 20, gap: 16}}>
                                 <h2 style={{margin: 0, textAlign: 'center', color: config.branding.primaryColor, fontSize: 18, fontFamily: config.branding.fontFamily, fontWeight: '600'}}>
-                                  {config.content.congratulationsTitle}
+                                  Congratulations!
                                 </h2>
                                 {config.content.poapImage ? (
                                   <img 
@@ -1385,7 +1386,7 @@ function App() {
                                 </h3>
                                 <div className="simple-loader"></div>
                                 <p style={{ color: config.branding.primaryColor, margin: 0, textAlign: 'center', fontSize: '12px', fontFamily: config.branding.fontFamily }}>
-                                  {config.content.loadingText}
+                                  Processing your POAP claim...
                                 </p>
                               </div>
                             </div>
